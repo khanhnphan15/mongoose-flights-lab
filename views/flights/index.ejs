@@ -1,6 +1,5 @@
 <%- include('../partials/header') %>
 
-  <h2>Flights List</h2>
   <table>
     <thead>
       <tr>
@@ -8,7 +7,7 @@
         <th>Flight No</th>
         <th>Airport</th>
         <th>Depart Date</th>
-        <th>Now Showing</th>
+        <th>Date Not Passed</th>
       </tr>
     </thead>
     <tbody>
@@ -30,12 +29,13 @@
 
           <!-- finish the ternary expression to display 'Yes' or 'Nope' -->
           <td>
-            <%= m.nowShowing ? 'Yes' : 'Nope' %>
+            <%= m.notPassed ? 'Yes' : 'Nope' %>
           </td>
+          <td><a href="/flights/<%= m._id %>">DETAILS</a></td>
         </tr>
         <!-- Close the forEach using EJS here -->
         <% }); %>
     </tbody>
   </table>
 
-  <%- include('../partials/header') %>
+  <%- include('../partials/footer') %>

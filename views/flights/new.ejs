@@ -1,23 +1,17 @@
 <%- include('../partials/header') %>
 
-  <h2>Add Flight</h2>
-  <form action="/flights" method="POST">
-    <label>Airline:
-      <input type="text" name="title">
-    </label><br>
-    <label>Flight No:
-      <input type="number" name="flightNo">
-    </label><br>
-    <label>Airport:
-      <input type="text" name="title">
-    </label><br>
-    <label>New Date:
-      <input type="datetime-local" name="newDate">
-    </label><br>
-    <label>Now Showing:
-      <input type="checkbox" name="nowShowing" checked>
-    </label><br>
-    <button type="submit">Update</button>
+  <form id="new-form" action="/flights" method="POST">
+    <label>Airline:</label>
+    <input type="text" name="airline">
+    <label>Flight No:</label>
+    <input type="number" name="flightNo">
+    <label>Airport Name:</label>
+    <input type="text" name="airport">
+    <label>Depart Date:</label>
+    <input type="datetime-local" name="newDate">
+    <label>Not Passed:</label>
+    <input type="checkbox" name="notPassed" checked>
+    <input type="submit" value="Add Flight">
   </form>
 
   <%- include('../partials/footer') %>
