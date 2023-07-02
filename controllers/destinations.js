@@ -9,11 +9,8 @@ module.exports = {
 async function create(req, res) {
     console.log(req.body)
     try {
-
         const flightFromTheDb = await FlightModel.findById(req.params.id)
-
-        flightFromTheDb.reviews.push(req.body);
-
+        flightFromTheDb.destinations.push(req.body);
         await flightFromTheDb.save();
         // Then respond to the client!
         console.log(flightFromTheDb)

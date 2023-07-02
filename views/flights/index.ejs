@@ -7,7 +7,6 @@
         <th>Flight No</th>
         <th>Airport</th>
         <th>Depart Date</th>
-        <th>Date Not Passed</th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +28,6 @@
 
           <!-- finish the ternary expression to display 'Yes' or 'Nope' -->
           <td>
-            <%= m.notPassed ? 'Yes' : 'Nope' %>
           </td>
           <td><a href="/flights/<%= m._id %>">DETAILS</a></td>
         </tr>

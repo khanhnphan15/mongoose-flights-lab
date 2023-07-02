@@ -1,3 +1,5 @@
+
+// Import our movie model in order to talk to the movies collection in mongodb
 const FlightModel = require('../models/flight');
 
 module.exports = {
@@ -19,15 +21,15 @@ async function index(req, res) {
 
 async function show(req, res) {
   const flight = await FlightModel.findById(req.params.id);
-  res.render('flights/show', { title: 'Flight Detail', flight });
+  const existingDestinations = flight.destinations.map(d => d.airport);
+  const availableDestinations = ['AUS', 'DFW', 'DEN', 'LAX', 'SAN'].filter((d) => !existingDestinations.includes(d));
+  let sortedDestinations = flight.destinations.sort((a, b) => {
+    let departsTimeA = a.toObject({ getters: false }).arrival;
+    let departsTimeB = b.toObject({ getters: false }).arrival;
+    return departsTimeA - departsTimeB;
+  });
+  res.render('flights/show', { title: 'Flight Detail', flight, availableDestinations, sortedDestinations });
 }
-
-
-// function update(req, res) {
-//   req.body.done = !!req.body.done;
-//   FlightModel.update(req.params.id, req.body);
-//   res.redirect(`/flights/${req.params.id}`);
-// };
 
 function newFlight(req, res) {
   const newFlight = new FlightModel();
@@ -41,7 +43,7 @@ function newFlight(req, res) {
 
 
 async function create(req, res) {
-  // convert nowShowing's checkbox of nothing or "on" to boolean
+  // // convert nowShowing's checkbox of nothing or "on" to boolean
   // req.body.nowShowing = !!req.body.nowShowing;
   // // remove any whitespace at start and end of cast
   // req.body.cast = req.body.cast.trim();
@@ -52,11 +54,11 @@ async function create(req, res) {
   //   if (req.body[key] === '') delete req.body[key];
   // }
   // try {
-
-
-  //   const movieFromTheDatabase = await MovieModel.create(req.body);// the await is waiting for the MovieModel to go to MongoDB ATLAS (our db) a
+		
+		
+  //   const movieFromTheDatabase =  await MovieModel.create(req.body);// the await is waiting for the MovieModel to go to MongoDB ATLAS (our db) a
   //   //and put the contents form in the db, and come to the express server
-
+		
   //   // if you want to see what you put in the database on your server
   //   console.log(movieFromTheDatabase)
 
@@ -68,5 +70,4 @@ async function create(req, res) {
   //   console.log(err);
   //   res.render('movies/new', { errorMsg: err.message });
   // }
-}
-
+	}

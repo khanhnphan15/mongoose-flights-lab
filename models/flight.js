@@ -24,6 +24,29 @@ const reviewSchema = new Schema({
   timestamps: true
 });
 
+const destinationSchema = new mongoose.Schema({
+  airport: {
+    type: String,
+    enum: ['AUS', 'DFW', 'DEN', 'LAX', 'SAN'],
+    default: 'DEN',
+  },
+  arrival: {
+    type: Date,
+    default: function () {
+      return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+    },
+    get: function (value) {
+      // // Transform and return value here
+      // return transformedValue;
+      let date = new Date(value);
+      let formattedDate = ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '-' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '-' + date.getFullYear();
+      let timeEls = date.toTimeString().split(' ')[0].split(':');
+      let formattedTime = `${timeEls[0]}:${timeEls[1]}`;
+      return `${formattedDate}T${formattedTime}`;
+    }
+  }
+});
+
 const flightSchema = new mongoose.Schema({
   airline: {
     type: String,
@@ -42,7 +65,7 @@ const flightSchema = new mongoose.Schema({
     default: 'DEN',
   },
   departs: {
-    type: Number,
+    type: Date,
     default: function () {
       return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
     },
@@ -58,14 +81,11 @@ const flightSchema = new mongoose.Schema({
   },
   name: [String],
   reviews: [reviewSchema],
+  destinations: [destinationSchema],
 }, {
   timestamps: true
 });
 
 // Compile the schema into a model and export it
 module.exports = mongoose.model('Flight', flightSchema);
-
-
-
-
 
