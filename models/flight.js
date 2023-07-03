@@ -79,6 +79,7 @@ const flightSchema = new mongoose.Schema({
       return `${formattedDate}T${formattedTime}`;
     }
   },
+  cast: [{type: Schema.Types.ObjectId, ref:'Performer'}],
   name: [String],
   reviews: [reviewSchema],
   destinations: [destinationSchema],

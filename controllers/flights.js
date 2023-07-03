@@ -1,6 +1,7 @@
 
 // Import our movie model in order to talk to the movies collection in mongodb
 const FlightModel = require('../models/flight');
+const TicketModel = require('../models/ticket');
 
 module.exports = {
   index,
@@ -28,7 +29,15 @@ async function show(req, res) {
     let departsTimeB = b.toObject({ getters: false }).arrival;
     return departsTimeA - departsTimeB;
   });
-  res.render('flights/show', { title: 'Flight Detail', flight, availableDestinations, sortedDestinations });
+  const tickets = await TicketModel.find({ flight: flight._id });
+
+  res.render('flights/show', {
+    title: 'Flight Detail',
+    flight,
+    availableDestinations,
+    sortedDestinations,
+    tickets
+  });
 }
 
 function newFlight(req, res) {
@@ -38,36 +47,37 @@ function newFlight(req, res) {
   // Format the date for the value attribute of the input
   let departsDate = `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}`;
   departsDate += `-${dt.getDate().toString().padStart(2, '0')}T${dt.toTimeString().slice(0, 5)}`;
-  res.render('flights/new', { title: 'Add Flight', departsDate});
+  res.render('flights/new', { title: 'Add Flight', departsDate, errorMsg: '' });
 }
 
-
 async function create(req, res) {
-  // // convert nowShowing's checkbox of nothing or "on" to boolean
-  // req.body.nowShowing = !!req.body.nowShowing;
-  // // remove any whitespace at start and end of cast
-  // req.body.cast = req.body.cast.trim();
-  // // split cast into an array if it's not an empty string - using a regular expression as a separator
-  // if (req.body.cast) req.body.cast = req.body.cast.split(/\s*,\s*/);
-  // // Remove empty properties so that defaults will be applied
-  // for (let key in req.body) {
-  //   if (req.body[key] === '') delete req.body[key];
-  // }
-  // try {
-		
-		
-  //   const movieFromTheDatabase =  await MovieModel.create(req.body);// the await is waiting for the MovieModel to go to MongoDB ATLAS (our db) a
-  //   //and put the contents form in the db, and come to the express server
-		
-  //   // if you want to see what you put in the database on your server
-  //   console.log(movieFromTheDatabase)
+  // convert nowShowing's checkbox of nothing or "on" to boolean
+  try {
+  const fightFromTheDatabase = await FlightModel.create(req.body);// the await is waiting for the MovieModel to go to MongoDB ATLAS (our db) a
 
-  //   // Always redirect after CUDing data
-  //   // We'll refactor to redirect to the movies index after we implement it
-  //   res.redirect('/movies');  // Update this line
-  // } catch (err) {
-  //   // Typically some sort of validation error
-  //   console.log(err);
-  //   res.render('movies/new', { errorMsg: err.message });
-  // }
-	}
+  console.log(fightFromTheDatabase)
+  res.redirect(`/flights'/${fightFromTheDatabase._id}`);  // Update this line
+} catch (err) {
+  // Typically some sort of validation error
+  console.log(err);
+  res.render('flights/new', { errorMsg: err.message });
+}
+}
+
+// async function create(req, res) {
+//   console.log('--------------------------------------1');
+//   console.log(req.body)
+//   try {
+    
+//       const flight = await FlightModel.findById(req.body.flight_id);
+     
+//       const newFlight = await FlightModel.create({
+//           ...req.body,
+//           flight,
+//       });
+    
+//       res.redirect(`/flights/${req.body.flight_id}`)
+//   } catch (err) {
+//       res.send(err)
+//   }
+// }
