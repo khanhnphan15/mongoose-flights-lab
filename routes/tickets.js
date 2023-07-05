@@ -6,7 +6,6 @@ const ticketsCtrl = require('../controllers/tickets');
 	
 // GET /tickets/new(new functionality)
 router.post('/tickets/create', ticketsCtrl.create);
-// POST /tickets(create functionality)
 //POST/flights/:id/tickets
 router.get('/flights/:id/tickets/new', ticketsCtrl.newTicket);
 //DELETE/tickets/:id

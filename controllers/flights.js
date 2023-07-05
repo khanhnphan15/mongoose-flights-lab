@@ -51,12 +51,14 @@ function newFlight(req, res) {
 }
 
 async function create(req, res) {
+  console.log('--------------------------------------6');
+    console.log(req.body)
   // convert nowShowing's checkbox of nothing or "on" to boolean
   try {
   const fightFromTheDatabase = await FlightModel.create(req.body);// the await is waiting for the MovieModel to go to MongoDB ATLAS (our db) a
 
   console.log(fightFromTheDatabase)
-  res.redirect(`/flights'/${fightFromTheDatabase._id}`);  // Update this line
+  res.redirect(`/flights/${fightFromTheDatabase._id}`);  // Update this line
 } catch (err) {
   // Typically some sort of validation error
   console.log(err);
