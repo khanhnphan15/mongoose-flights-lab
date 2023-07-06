@@ -9,11 +9,11 @@ module.exports = {
     delete: deleteTicket,
 };
 
-function deleteTicket(req, res) {
-    TicketModel.deleteOne(req.params.id);
-    res.redirect('/tickets/new');
-    ;
-}
+async function deleteTicket(req, res) {
+    await TicketModel.deleteOne( req.params.id);
+    res.redirect(`/flights/${req.params.id}`);
+    
+};
 
 async function create(req, res) {
     console.log('--------------------------------------1');
@@ -43,7 +43,7 @@ async function newTicket(req, res) {
 };
 async function addToCast(req, res) {
     const movie = await FlightModel.findById(req.params.id);
-    flight.case.push(req.body.performerId);
+    flight.cast.push(req.body.performerId);
     await flight.save();
     res.redirect(`/flights/${flight._id}`);
 };

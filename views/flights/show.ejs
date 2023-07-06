@@ -97,8 +97,10 @@
     <% }); %>
     </tbody>
   </table>
-
   <button type="submit">Add New Ticket</button>
+  <form action="/flights/<%= flight.id %>/flights/id" _method="DELETE" method="POST">
+    <button type="submit">Delete Ticket</button>
+</form>
 </form>
 
 <!-- new markup below -->
